@@ -1,0 +1,374 @@
+# Network Science: Praxis - Calculate the Friendship paradox
+
+# Step 2: Friendship paradox example
+# (a) Use networkx's graph generators to construct a graph
+# (b) Calculate the average degree of the network
+# (c) Calculate the average degree of neighbors of few random nodes in network 
+# (d) Compare those values with the degree of the nodes themselves
+
+# Create graph with generators, draw(), show()
+star_graph = nx.star_graph(n=20)
+nx.draw(star_graph)
+plt.show()
+
+# Calculate the average degree of the graph
+import numpy as np
+avg_degree = np.mean([star_graph.degree(node) for node in star_graph.nodes()])
+print("Average degree", avg_degree)
+Average degree 1.90476190476
+
+# Q1: Average Neighbor Degree
+# Write a function that calculates the average degree of a node's neighbors.* 
+# find neighbors of the node, find degree for each of neighbors, calculate average
+
+def avg_neigh_deg(star_graph): 
+	data = {}	
+	for node in star_graph.nodes(): 	  
+		if star_graph.degree(node):		
+			data[node] = float(sum(star_graph.degree(i) for i in star_graph[node]))/star_graph.degree(node)
+	return data	
+
+{0: 1.0, 1: 20.0, 2: 20.0, 3: 20.0, 4: 20.0, 5: 20.0, 6: 20.0, 7: 20.0, 8: 20.0, 9: 20.0, 10: 20.0, 11: 20.0, 12: 20.0, 13: 20.0, 14: 20.0, 15: 20.0, 16: 20.0, 17: 20.0, 18: 20.0, 19: 20.0, 20: 20.0}
+
+# Q2: Viewing the friendship paradox
+# Check whether friendship paradox exists in this network.
+# Select smaller random set for visualization. 
+
+data = nx.average_neighbor_degree(star_graph) 
+print(data.items())
+dict_items([(0, 1.0), (1, 20.0), (2, 20.0), (3, 20.0), (4, 20.0), (5, 20.0), (6, 20.0), (7, 20.0), (8, 20.0), (9, 20.0), (10, 20.0), (11, 20.0), (12, 20.0), (13, 20.0), (14, 20.0), (15, 20.0), (16, 20.0), (17, 20.0), (18, 20.0), (19, 20.0), (20, 20.0)])
+
+# Pick a suitable numpy function for random numbers; select subset from data returned  
+# Apply your function to 4 random nodes of the network
+
+rand_num = np.random.random_integers(0, 20, 4)
+for rand_val in rand_num:
+	print(rand_val)
+4
+9
+1
+13
+
+# The dictionary has keys equal to id of nodes in network which happen to be integers
+# loop through dictionaries; key is the node, value is avg_neigh_deg
+
+for key, value in data.items():
+	print(key, value)
+0 1.0
+1 20.0
+2 20.0
+3 20.0
+4 20.0
+5 20.0
+6 20.0
+7 20.0
+8 20.0
+9 20.0
+10 20.0
+11 20.0
+12 20.0
+13 20.0
+14 20.0
+15 20.0
+16 20.0
+17 20.0
+18 20.0
+19 20.0
+20 20.0
+
+# Retrieve a value from a list or dictionary using brackets:
+
+avg_neigh_degr4 = data[4]
+	print("Node 4’s average neighbor degree: ", avg_neigh_degr4)
+Node 4’s average neighbor degree:  20.0
+
+avg_neigh_degr_9 = data[9]
+	print("Node 9’s degree: ", avg_neigh_degr9)
+Node 9’s average neighbor degree:  20.0
+
+aavg_neigh_degr1 = data[1]
+	print("Node 1’s degree: ", avg_neigh_degr1)
+Node 1’s average neighbor degree:  20.0
+
+avg_neigh_degr13 = data[13]
+	print("Node 13’s degree: ", avg_neigh_degr13)
+Node 13’s average neighbor degree:  20.0
+
+# Print out degree of chosen node and average degree of its neighbors for comparison:
+
+node4_degree = star_graph.degree(4)
+print("Node 4’s degree: ", node4_degree)
+Node 4’s degree:  1
+
+avg_neigh_degr0 = data[0]
+	print("Node 0’s average neighbor degree: ", avg_neigh_degr0)
+Node 0’s average neighbor degree:  1.0
+
+# Fourth, compare those values with the degree of the nodes themselves.
+
+All of the nodes other than the central hub have a degree of 1, and average neighbor degree of 20. The hub’s degree is 20, and its average neighbor degree is 1.0. 
+
+node0_degree = star_graph.degree(0)
+print("Node 0’s degree: ", node0_degree)
+Node 0’s degree:  20
+
+# Step 3: Friendship paradox assignment
+# Perform similar analysis for two other types of graphs: scale-free and random graphs 
+# Use networkx's generator functions for making scale-free graph and random graph.
+
+python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Q3: Scale-free graph
+# For the barabasi-albert graph use the parameters n=200 and m=3. Answer the following:
+
+scale_free_graph = nx.barabasi_albert_graph(n=200, m=3)
+nx.draw(scale_free_graph)
+plt.show()
+
+￼
+# 1. What is the average degree of the graph?
+import numpy as np
+avg_degree = np.mean([scale_free_graph.degree(node) for node in scale_free_graph.nodes()])
+print("Average degree", avg_degree)
+Average degree  
+
+print(nx.info(scale_free_graph))
+Name: barabasi_albert_graph(200,3)
+Type: Graph
+Number of nodes: 200
+Number of edges: 591
+Average degree:   5.9100
+
+# 2. Pick a few random nodes from the network. 
+rand_num = np.random.random_integers(0, 200, 4)
+for rand_val in rand_num:
+	print(rand_val)
+35
+106
+179
+64
+
+# For each node: What is the node's degree? 
+
+node35_degree = scale_free_graph.degree(35)
+print("Node 35’s degree: ", node35_degree)
+Node 35’s degree: 5 
+
+node106_degree = scale_free_graph.degree(106)
+print("Node 106’s degree: ", node106_degree)
+Node 106’s degree: 9 
+
+node179_degree = scale_free_graph.degree(179)
+print("Node 179’s degree: ", node179_degree)
+Node 179’s degree: 3
+
+node64_degree = scale_free_graph.degree(64)
+print("Node 64’s degree: ", node64_degree)
+Node 64’s degree: 5
+
+# How does it compare with the node's average neighbor degree?*
+# Half of the four randomly sampled nodes had degrees that were higher than their 
+# average neighbor degree, and half had degrees that were lower than the avg_neigh_degree.
+
+def avg_neigh_deg(scale_free_graph): 
+	data = {}	
+	for node in scale_free_graph.nodes(): 	  
+		if scale_free_graph.degree(node):		
+			data[node] = float(sum(scale_free_graph.degree(i) for i in scale_free_graph[node]))/scale_free_graph.degree(node)
+	return data	
+
+data = nx.average_neighbor_degree(scale_free_graph) 
+for key, value in data.items():
+	print(key, value)
+
+avg_neigh_degr35 = data[35]
+print("Node 35’s average neighbor degree: ", avg_neigh_degr35)
+Node 35’s average neighbor degree: 14.4  
+
+avg_neigh_degr106 = data[106]
+print("Node 106’s degree: ", avg_neigh_degr106)
+Node 106’s average neighbor degree: 7.33 
+
+avg_neigh_degr179 = data[179]
+print("Node 179’s degree: ", avg_neigh_degr179)
+Node 179’s average neighbor degree: 12.33  
+
+avg_neigh_degr64 = data[64]
+print("Node 64’s degree: ", avg_neigh_degr64)
+Node 64’s average neighbor degree: 12.4
+
+# 3. What fraction of nodes in graph have a larger avg_neigh_degree than their degree?
+# I was not able to determine this value; however, 19 out of 200 nodes (9.5%) had an average neighbor degree that was 
+# less than the average degree of the graph. This means that, conversely, 181 of 200 nodes (90.5%) had average neighbor 
+# degree greater than the average degree of the graph, suggesting the friendship paradox is observed in the scale free graph. 
+ 
+def node_ratio():
+	for key, value in data.items():
+		if value < 5.91:		
+			print(key, value)
+node_ratio()
+
+41 5.818181818181818
+53 5.416666666666667
+100 5.166666666666667
+113 5.8
+115 5.25
+116 5.25
+118 5.5
+121 5.666666666666667
+124 5.25
+128 4.0
+138 4.666666666666667
+139 5.5
+145 5.285714285714286
+147 5.5
+150 5.5
+161 4.666666666666667
+170 4.25
+176 5.666666666666667
+199 5.333333333333333
+
+# 4. Yes, the friendship paradox did occur in the scale-free graph, because the average neighbor degree for the majority 
+# of nodes (90.5%) was higher than the average degree for the graph. In other words, most of the nodes had neighbors with 
+# more degrees, on average, than for the mean for the entire graph. 
+
+# Q4: Random graph
+# For the erdos-renyi graph use the parameters n=200 and p=0.2.
+
+random_graph = nx.erdos_renyi_graph(n=200, p=0.2)
+nx.draw(scale_free_graph)
+plt.show()
+￼
+
+# 1. What is the average degree of the graph?
+
+import numpy as np
+avg_degree = np.mean([random_graph.degree(node) for node in random_graph.nodes()])
+print("Average degree", avg_degree)
+Average degree 39.5
+
+print(nx.info(random_graph))
+Name: gnp_random_graph(200,0.2)
+Type: Graph
+Number of nodes: 200
+Number of edges: 3950
+Average degree:  39.5000 
+
+# 2. Pick a few random nodes from the network. 
+
+rand_num = np.random.random_integers(0, 200, 4)
+for rand_val in rand_num:
+	print(rand_val)
+198
+89
+72
+34
+
+# For each node: What is the node's degree? 
+
+node198_degree = random_graph.degree(198)
+print("Node 198’s degree: ", node198_degree)
+Node 198’s degree:  47  
+
+node89_degree = random_graph.degree(89)
+print("Node 89’s degree: ", node89_degree)
+Node 89’s degree:  36   
+
+node72_degree = random_graph.degree(72)
+print("Node 72’s degree: ", node72_degree)
+Node 72’s degree:  31 
+
+node34_degree = random_graph.degree(34)
+print("Node 34’s degree: ", node34_degree)
+Node34’s degree:  46 
+
+# How does it compare with the node's average neighbor degree?
+# As before, half the four randomly sampled nodes had degrees that were higher than their 
+# average neighbor degree, and half had degrees that were lower than the avg_neigh_degree.
+def avg_neigh_deg(random_graph): 
+	data = {}	
+	for node in random_graph.nodes(): 	  
+		if random_graph.degree(node):		
+			data[node] = float(sum(random_graph.degree(i) for i in random_graph[node]))/random_graph.degree(node)
+	return data	
+ 
+data = nx.average_neighbor_degree(random_graph) 
+for key, value in data.items():
+	print(key, value)
+
+avg_neigh_degr198 = data[198]
+print("Node 198’s average neighbor degree: ", avg_neigh_degr198)
+Node 198’s average neighbor degree:  40.61702127659574 
+
+avg_neigh_degr89 = data[89]
+print("Node 89’s degree: ", avg_neigh_degr89)
+Node 89’s average neighbor degree:  39.55555555555556
+
+avg_neigh_degr72 = data[72]
+print("Node 72’s degree: ", avg_neigh_degr72)
+Node 72’s average neighbor degree:  41.25806451612903  
+
+avg_neigh_degr34 = data[34]
+print("Node 34’s degree: ", avg_neigh_degr34)
+Node 34’s average neighbor degree:  40.82608695652174
+ 
+# 3. What fraction of nodes in graph have a larger avg_neigh_degree than their degree?
+# I was not able to determine this value; however, 39 out of 200 noes (19.5%) had an average 
+# neighbor degree that was less than the average degree of the graph. This means that, conversely, 
+# 161 of the 200 nodes (81%) had an average neighbor degree greater than the average degree of the graph.
+ 
+def node_ratio():
+	for key, value in data.items():
+		if value < 39.5:		
+			print(key, value)
+node_ratio()
+4 39.303030303030305
+5 39.388888888888886
+8 39.05714285714286
+9 38.86666666666667
+12 39.46341463414634
+19 38.425
+20 39.333333333333336
+24 39.189189189189186
+26 38.97872340425532
+35 39.473684210526315
+41 38.765957446808514
+45 39.41463414634146
+50 38.75675675675676
+53 38.84615384615385
+54 39.46153846153846
+60 39.04761904761905
+61 39.27906976744186
+66 39.30555555555556
+78 39.13636363636363
+82 39.38095238095238
+92 39.44897959183673
+93 38.57142857142857
+101 39.47222222222222
+113 39.075
+135 39.31428571428572
+137 39.351351351351354
+138 39.31578947368421
+144 39.48717948717949
+145 38.707317073170735
+160 39.0
+171 38.68292682926829
+172 38.8125
+173 39.22222222222222
+177 38.90384615384615
+189 39.39473684210526
+193 39.45238095238095
+194 39.2093023255814
+196 39.0
+197 39.2
+ 
+# 4. Yes, the friendship paradox occur in random graph, because, as in the previous example, the majority of nodes (81%) had an average neighbor degree that was higher than the average degree for the graph. In other words, most of the nodes had neighbors with more degrees, on average, compared to the mean of the entire entire. 
+
+# Lastly: rename your notebook as 'friendship_lastname_firstname' and upload to Canvas 
+# in the Friendship paradox assignment section.
+
+# Note: The function follows an example from ”Networkx: Network Analysis with Python" 
+# by Petko Georgiev and Salvatore Scellato, from Cambridge University Computer Lab:
+# https://www.cl.cam.ac.uk/teaching/1314/L109/tutorial.pdf
